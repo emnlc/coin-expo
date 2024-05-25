@@ -8,7 +8,8 @@ const Navbar = () => {
     <>
       <div className="shadow-md w-full fixed top-0 left-0">
         <div className=" font-bold text-2xl items-center md:flex justify-between bg-white py-4 md:px-10 px-7">
-          <h1>Coin Expo</h1>
+          {/* <h1>Coin Expo</h1> */}
+          <Link to={"/"}>Coin Expo</Link>
 
           {/* Image container */}
           <div
@@ -17,7 +18,7 @@ const Navbar = () => {
           >
             <img
               className=" transition-all"
-              src={`${open ? "x.svg" : "hamburger.svg"}`}
+              src={`${open ? "close.svg" : "hamburger.svg"}`}
               alt=""
             />
           </div>

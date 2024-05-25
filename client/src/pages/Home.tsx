@@ -1,26 +1,38 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
 
-interface Todo {
-  id: number;
-}
+import CoinTable from "@/components/CoinTable/CoinTable";
 
 const Home = () => {
-  const { data, isLoading, isError } = useQuery<Todo[]>({
-    queryKey: ["todo"],
-  });
-
-  // console.log(data);
-
-  if (isLoading) return <h1>Loading..</h1>;
-  if (isError) return <h1>error</h1>;
-  if (!data) return <></>;
-
   return (
     <>
-      {data.map((todo) => (
-        <div key={todo.id}>ID: {todo.id}</div>
-      ))}
+      <div className="flex flex-col container my-36">
+        <header className="my-16">
+          <h1 className="font-medium text-xl">Todays crypto analytics.</h1>
+        </header>
+        <CoinTable />
+      </div>
+      <footer className=" bg-zinc-800 text-white py-24 flex justify-center">
+        <ul className="text-center">
+          <li>
+            Data provided by{" "}
+            <a
+              className="hover:text-coinmarketcap hover:underline transition-all"
+              href=""
+            >
+              CoinMarketCap
+            </a>
+          </li>
+          <li>
+            Powered by{" "}
+            <a
+              className="hover:text-coingecko hover:underline transition-all"
+              href="https://www.coingecko.com/"
+            >
+              CoinGecko
+            </a>
+          </li>
+        </ul>
+      </footer>
     </>
   );
 };

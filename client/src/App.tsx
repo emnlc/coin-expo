@@ -2,24 +2,28 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import Home from "./pages/Home";
+import Coin from "./pages/Coin";
+
+import Navbar from "./components/Navbar";
 
 function App() {
   useQuery({
-    queryKey: ["todo"],
+    queryKey: ["coins"],
     queryFn: () => {
-      const d = fetch("https://jsonplaceholder.typicode.com/todos").then(
-        (res) => res.json()
-      );
+      const d = fetch("/coins").then((res) => res.json());
       return d;
     },
+    staleTime: 5 * 60 * 1000,
   });
 
   // console.log(data);
 
   return (
     <Router>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/:coin" element={<Coin />} />
       </Routes>
     </Router>
   );
