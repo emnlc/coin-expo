@@ -5,17 +5,9 @@ import { Link } from "react-router-dom";
 import CoinTableSkeleton from "./CoinTableSkeleton";
 
 import CoinTablePagination from "./CoinTablePagination";
-import CoinTableDropdown from "./CoinTableDropdown";
+import CoinTableHeaders from "./CoinTableHeaders";
 
-import {
-  Table,
-  TableBody,
-  //   TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 interface Coins {
   id: number;
@@ -48,6 +40,7 @@ const CoinTable = () => {
       setCoinsData(data.data);
     }
   }, [data]);
+  // console.log(data);
 
   // pagination variables
   const rowsPerPage = 100;
@@ -94,19 +87,7 @@ const CoinTable = () => {
     <>
       <Table>
         {/* table headers */}
-        <TableHeader>
-          <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>
-              <CoinTableDropdown
-                change={change}
-                setChange={setChange}
-              ></CoinTableDropdown>
-            </TableHead>
-          </TableRow>
-        </TableHeader>
+        <CoinTableHeaders change={change} setChange={setChange} />
 
         {/* table content */}
         <TableBody>
@@ -119,7 +100,7 @@ const CoinTable = () => {
                   <TableCell>{coin.cmc_rank}</TableCell>
                   <TableCell className="font-semibold flex flex-col">
                     <span>
-                      <Link to={`/${coin.slug}`} state={{ id: coin.id }}>
+                      <Link to={`/${coin.slug}`} state={{ coin: coin }}>
                         {coin.name}
                       </Link>
                     </span>
