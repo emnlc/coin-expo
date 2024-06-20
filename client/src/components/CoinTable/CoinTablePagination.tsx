@@ -1,11 +1,7 @@
-import React from "react";
-
 import {
   Pagination,
   PaginationContent,
-  //   PaginationEllipsis,
   PaginationItem,
-  //   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
@@ -41,7 +37,7 @@ const CoinTablePagination = (props: Props) => {
         <PaginationItem>
           <PaginationNext
             className={
-              props.endIndex === 1000
+              props.endIndex === 500
                 ? "pointer-events-none opacity-50"
                 : undefined
             }

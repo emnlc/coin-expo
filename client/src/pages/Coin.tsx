@@ -2,6 +2,25 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useLocation } from "react-router-dom";
 
+import CoinChart from "@/components/CoinChart/CoinChart";
+
+interface Coins {
+  id: number;
+  name: string;
+  cmc_rank: number;
+  symbol: string;
+  slug: string;
+  quote: {
+    USD: {
+      price: number;
+      percent_change_1h: number;
+      percent_change_24h: number;
+      percent_change_7d: number;
+      percent_change_30d: number;
+    };
+  };
+}
+
 interface Coin {
   name: string;
   id: string;
@@ -13,7 +32,7 @@ interface Coin {
 const Coin = () => {
   const { coin } = useParams<{ coin: string }>();
   const location = useLocation();
-  const coinID: string = location.state.id;
+  const coinStats: Coins = location.state.coin;
 
   const [coinData, setCoinData] = useState<Coin>();
 
@@ -28,9 +47,9 @@ const Coin = () => {
 
   useEffect(() => {
     if (data) {
-      setCoinData(data.data[coinID]);
+      setCoinData(data.data[coinStats.id]);
     }
-  }, [data, coinID]);
+  }, [data, coinStats]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error!</div>;
@@ -40,14 +59,29 @@ const Coin = () => {
   return (
     <>
       <div className="flex flex-col container my-36">
-        <div className="flex flex-row items-center gap-4 my-8">
+        {/* coin icon, name and symbol */}
+        <div className="flex flex-row items-center gap-4 mb-8">
           <img className="h-16 w-16 rounded-full" src={coinData.logo} alt="" />
-          <div className="font-semibold text-4xl flex flex-col">
+          <div className="font-semibold text-2xl flex flex-col">
             <h1>{coinData.name}</h1>{" "}
             <span className=" text-sm text-gray-500">{coinData.symbol}</span>
           </div>
         </div>
-        <p>{coinData.description}</p>
+
+        {/* coin price */}
+        <div className="flex flex-row justify-start items-start">
+          <h1 className="text-4xl font-semibold">
+            ${coinStats.quote.USD.price.toFixed(9)}
+          </h1>
+          <span className="text-sm text-gray-500">USD</span>
+        </div>
+        <p className="text-sm">{coinData.description}</p>
+
+        <CoinChart
+          name={coinStats.name}
+          symbol={coinStats.symbol}
+          slug={coinStats.slug}
+        ></CoinChart>
       </div>
     </>
   );

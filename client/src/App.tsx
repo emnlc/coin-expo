@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Coin from "./pages/Coin";
 
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   useQuery({
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/:coin" element={<Coin />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }
