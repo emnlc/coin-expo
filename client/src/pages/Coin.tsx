@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, useLocation } from "react-router-dom";
 
 import CoinChart from "@/components/CoinChart/CoinChart";
+import CoinPriceFormatter from "@/components/CoinPriceFormatter";
 
 interface Coins {
   id: number;
@@ -71,7 +72,7 @@ const Coin = () => {
         {/* coin price */}
         <div className="flex flex-row justify-start items-start">
           <h1 className="text-4xl font-semibold">
-            ${coinStats.quote.USD.price.toFixed(9)}
+            ${<CoinPriceFormatter price={coinStats.quote.USD.price} />}
           </h1>
           <span className="text-sm text-gray-500">USD</span>
         </div>

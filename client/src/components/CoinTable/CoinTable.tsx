@@ -7,6 +7,8 @@ import CoinTableSkeleton from "./CoinTableSkeleton";
 import CoinTablePagination from "./CoinTablePagination";
 import CoinTableHeaders from "./CoinTableHeaders";
 
+import CoinPriceFormatter from "../CoinPriceFormatter";
+
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 interface Coins {
@@ -107,7 +109,7 @@ const CoinTable = () => {
                     <span className=" text-gray-500">{coin.symbol}</span>
                   </TableCell>
                   <TableCell className="font-semibold">
-                    ${coin.quote.USD.price.toFixed(4)}
+                    $<CoinPriceFormatter price={coin.quote.USD.price} />
                   </TableCell>
                   {renderPercentChange(coin)}
                 </TableRow>

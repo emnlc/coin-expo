@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+
+import CoinChartOptions from "./CoinChartOptions";
 
 import ReactECharts from "echarts-for-react";
 interface Props {
@@ -6,6 +9,8 @@ interface Props {
 }
 
 const CoinChartGraph = (props: Props) => {
+  const [range, setRange] = useState("30");
+
   const setLineColor = (change: number) => {
     if (change.toString()[0] === "-") {
       return "#D70040";
@@ -26,10 +31,14 @@ const CoinChartGraph = (props: Props) => {
     queryKey: ["graphData", props.id],
     queryFn: () =>
       fetch(
-        `https://api.coingecko.com/api/v3/coins/${props.id}/market_chart?vs_currency=usd&days=30`
+        `https://api.coingecko.com/api/v3/coins/${props.id}/market_chart?vs_currency=usd&days=${range}`
       ).then((res) => res.json()),
-    enabled: !!props.id, // only run if metadataQuery is available
+    enabled: !!props.id && !!range, // only run if props and range is available
   });
+
+  useEffect(() => {
+    graphDataQuery.refetch();
+  }, [range, graphDataQuery]);
 
   if (graphDataQuery.isLoading || changeQuery.isLoading) {
     return <div>Loading...</div>;
@@ -39,6 +48,7 @@ const CoinChartGraph = (props: Props) => {
   }
 
   const lineColor = changeQuery.data;
+  // console.log(lineColor);
   const prices = graphDataQuery.data?.prices;
   const formattedData = prices.map((item: [number, number]) => ({
     x: new Date(item[0]),
@@ -58,8 +68,15 @@ const CoinChartGraph = (props: Props) => {
   const maxRange = maxValue + rangeBuffer;
 
   const options = {
+    grid: {
+      left: 50,
+      right: 0,
+    },
     xAxis: {
       type: "time",
+      axisTick: {
+        show: false,
+      },
       axisLabel: {
         formatter: (value: number) => {
           const date = new Date(value);
@@ -68,6 +85,9 @@ const CoinChartGraph = (props: Props) => {
           const year = date.getFullYear().toString().slice(-2);
           return `${month}/${day}/${year}`;
         },
+        rotate: 45,
+        hideOverlap: true,
+        showMinLabel: false,
       },
     },
     yAxis: {
@@ -77,9 +97,7 @@ const CoinChartGraph = (props: Props) => {
       axisLabel: {
         showMinLabel: false,
         showMaxLabel: false,
-        // formatter: (value: number) => {
-        //   return value;
-        // },
+        formatter: (value: number) => `$${value}`,
       },
     },
     series: [
@@ -94,7 +112,7 @@ const CoinChartGraph = (props: Props) => {
           color: setLineColor(
             lineColor.market_data.price_change_percentage_30d
           ),
-          width: 2,
+          width: 1,
         },
         showSymbol: false,
       },
@@ -110,7 +128,14 @@ const CoinChartGraph = (props: Props) => {
   };
 
   return (
-    <ReactECharts option={options} style={{ height: 400, width: "100%" }} />
+    <>
+      <CoinChartOptions range={range} setRange={setRange} />
+      <ReactECharts
+        option={options}
+        style={{ height: 400, position: "relative" }}
+      />
+      <h1>{range}</h1>
+    </>
   );
 };
 

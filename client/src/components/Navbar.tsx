@@ -6,7 +6,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="shadow-md w-full fixed top-0 left-0">
+      <div className="shadow-md w-full fixed top-0 left-0 z-50">
         <div className=" font-bold text-2xl items-center md:flex justify-between bg-white py-4 md:px-10 px-7">
           {/* <h1>Coin Expo</h1> */}
           <Link to={"/"}>Coin Expo</Link>
