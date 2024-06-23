@@ -30,7 +30,13 @@ const CoinChart = (props: Props) => {
 
   return (
     <div className="my-12">
-      {id ? <CoinChartGraph id={id} /> : <div>no prices</div>}
+      {id ? (
+        <>
+          <CoinChartGraph id={id} />
+        </>
+      ) : (
+        <div>no data available</div>
+      )}
     </div>
   );
 };
