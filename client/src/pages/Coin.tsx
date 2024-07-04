@@ -4,6 +4,11 @@ import { useParams, useLocation } from "react-router-dom";
 
 import CoinChart from "@/components/CoinChart/CoinChart";
 import CoinPriceFormatter from "@/components/CoinPriceFormatter";
+import CoinHeader from "@/components/CoinPage/CoinHeader";
+
+import CoinStatistics from "@/components/CoinPage/CoinStatistics";
+import CoinDescription from "@/components/CoinPage/CoinDescription";
+import CoinUrls from "@/components/CoinPage/CoinUrls";
 
 interface Coins {
   id: number;
@@ -11,6 +16,9 @@ interface Coins {
   cmc_rank: number;
   symbol: string;
   slug: string;
+  max_supply: number;
+  total_supply: number;
+  circulating_supply: number;
   quote: {
     USD: {
       price: number;
@@ -18,6 +26,10 @@ interface Coins {
       percent_change_24h: number;
       percent_change_7d: number;
       percent_change_30d: number;
+      market_cap: number;
+      volume_24h: number;
+      fully_diluted_market_cap: number;
+      market_cap_dominance: number;
     };
   };
 }
@@ -28,6 +40,17 @@ interface Coin {
   symbol: string;
   description: string;
   logo: string;
+  twitter_username: string;
+  urls: {
+    website: [string];
+    twitter: [string];
+    message_board: [string];
+    facebook: [string];
+    explorer: [];
+    reddit: [string];
+    technical_doc: [string];
+    source_code: [string];
+  };
 }
 
 const Coin = () => {
@@ -46,6 +69,7 @@ const Coin = () => {
     staleTime: 5 * 60 * 1000,
   });
 
+  // console.log(data);
   useEffect(() => {
     if (data) {
       setCoinData(data.data[coinStats.id]);
@@ -61,28 +85,32 @@ const Coin = () => {
     <>
       <div className="flex flex-col container my-36">
         {/* coin icon, name and symbol */}
-        <div className="flex flex-row items-center gap-4 mb-8">
-          <img className="h-16 w-16 rounded-full" src={coinData.logo} alt="" />
-          <div className="font-semibold text-2xl flex flex-col">
-            <h1>{coinData.name}</h1>{" "}
-            <span className=" text-sm text-gray-500">{coinData.symbol}</span>
-          </div>
-        </div>
+        <CoinHeader coin={coinStats} img={coinData.logo} />
 
         {/* coin price */}
         <div className="flex flex-row justify-start items-start">
           <h1 className="text-4xl font-semibold">
             ${<CoinPriceFormatter price={coinStats.quote.USD.price} />}
           </h1>
-          <span className="text-sm text-gray-500">USD</span>
+          <span className="text-sm text-gray-500 ml-1">USD</span>
         </div>
-        <p className="text-sm">{coinData.description}</p>
 
         <CoinChart
           name={coinStats.name}
           symbol={coinStats.symbol}
           slug={coinStats.slug}
-        ></CoinChart>
+        />
+
+        <CoinStatistics coin={coinStats} />
+
+        <div className="flex flex-col md:flex-row gap-16">
+          <CoinDescription
+            name={coinData.name}
+            description={coinData.description}
+          />
+
+          <CoinUrls coin={coinData} />
+        </div>
       </div>
     </>
   );

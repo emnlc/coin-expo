@@ -20,6 +20,8 @@ const CoinTableHeaders = (props: Props) => {
             setChange={props.setChange}
           ></CoinTableDropdown>
         </TableHead>
+        <TableHead>Market Cap</TableHead>
+        <TableHead>Circulating Supply</TableHead>
       </TableRow>
     </TableHeader>
   );

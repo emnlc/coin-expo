@@ -33,6 +33,7 @@ const CoinTableDropdown = (props: Props) => {
           <DropdownMenuRadioItem value="1h">1h</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="24h">24h</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="7d">7d</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="30d">30d</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

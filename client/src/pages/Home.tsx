@@ -1,13 +1,13 @@
-import React from "react";
-
+import GlobalMetrics from "@/components/GlobalMetrics";
 import CoinTable from "@/components/CoinTable/CoinTable";
 
 const Home = () => {
   return (
     <>
-      <div className="flex flex-col container my-36">
-        <header className="my-16">
-          <h1 className="font-medium text-xl">Todays crypto analytics.</h1>
+      <GlobalMetrics />
+      <div className="flex flex-col container">
+        <header className="my-8">
+          <h1 className="font-semibold text-xl">Today's Crypto Prices.</h1>
         </header>
         <CoinTable />
       </div>

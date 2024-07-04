@@ -62,6 +62,24 @@ app.get("/coins", async (req, res) => {
   res.send(cachedData);
 });
 
+app.get("/coins/global-metrics", async (req, res) => {
+  try {
+    const response = await axios.get(
+      `https://pro-api.coinmarketcap.com/v1/global-metrics/quotes/latest`,
+      {
+        headers: {
+          "X-CMC_PRO_API_KEY": process.env.CMC_KEY,
+        },
+      }
+    );
+
+    console.log("global metrics fetched!");
+    res.send(response.data);
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+  }
+});
+
 app.get("/coins/:coin", async (req, res) => {
   try {
     const response = await axios.get(

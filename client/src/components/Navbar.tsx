@@ -9,7 +9,13 @@ const Navbar = () => {
       <div className="shadow-md w-full fixed top-0 left-0 z-50">
         <div className=" font-bold text-2xl items-center md:flex justify-between bg-white py-4 md:px-10 px-7">
           {/* <h1>Coin Expo</h1> */}
-          <Link to={"/"}>Coin Expo</Link>
+          <Link
+            className="flex items-center gap-4 hover:text-blue-500 transition-all"
+            to={"/"}
+          >
+            <img src="logo.svg"></img>
+            <span className="hidden md:block">Coin Expo</span>
+          </Link>
 
           {/* Image container */}
           <div
@@ -30,13 +36,15 @@ const Navbar = () => {
             }`}
           >
             <li className="md:ml-8 text-xl md:my-0 my-7">
-              <Link to={"/"}>1</Link>
+              <Link to={"/"} className="hover:text-blue-500 transition-all">
+                Account
+              </Link>
             </li>
             <li className="md:ml-8 text-xl md:my-0 my-7">
-              <Link to={"/"}>2</Link>
+              <Link to={"/"}></Link>
             </li>
             <li className="md:ml-8 text-xl md:my-0 my-7">
-              <Link to={"/"}>3</Link>
+              <Link to={"/"}></Link>
             </li>
           </ul>
         </div>

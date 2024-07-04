@@ -17,12 +17,15 @@ interface Coins {
   cmc_rank: number;
   symbol: string;
   slug: string;
+  circulating_supply: number;
   quote: {
     USD: {
       price: number;
       percent_change_1h: number;
       percent_change_24h: number;
       percent_change_7d: number;
+      percent_change_30d: number;
+      market_cap: number;
     };
   };
 }
@@ -35,7 +38,7 @@ const CoinTable = () => {
   });
 
   const [coinsData, setCoinsData] = useState<Coins[]>([]);
-  const [change, setChange] = useState("7d"); // default market percent value
+  const [change, setChange] = useState("30d"); // default market percent value
 
   useEffect(() => {
     if (data) {
@@ -62,6 +65,9 @@ const CoinTable = () => {
     }
     if (change === "7d") {
       percent = coin.quote.USD.percent_change_7d;
+    }
+    if (change === "30d") {
+      percent = coin.quote.USD.percent_change_30d;
     }
 
     return (
@@ -98,9 +104,11 @@ const CoinTable = () => {
             .sort((a, b) => a.cmc_rank - b.cmc_rank)
             .map((coin: Coins) => {
               return (
-                <TableRow key={coin.id}>
-                  <TableCell>{coin.cmc_rank}</TableCell>
-                  <TableCell className="font-semibold flex flex-col">
+                <TableRow className="font-semibold" key={coin.id}>
+                  <TableCell className=" items-center">
+                    {coin.cmc_rank}
+                  </TableCell>
+                  <TableCell className="flex flex-col ">
                     <span>
                       <Link to={`/${coin.slug}`} state={{ coin: coin }}>
                         {coin.name}
@@ -108,10 +116,22 @@ const CoinTable = () => {
                     </span>
                     <span className=" text-gray-500">{coin.symbol}</span>
                   </TableCell>
-                  <TableCell className="font-semibold">
+                  <TableCell>
                     $<CoinPriceFormatter price={coin.quote.USD.price} />
                   </TableCell>
                   {renderPercentChange(coin)}
+                  <TableCell>
+                    $
+                    {coin.quote.USD.market_cap.toLocaleString("en-US", {
+                      maximumFractionDigits: 0,
+                    })}
+                  </TableCell>
+                  <TableCell>
+                    {coin.circulating_supply.toLocaleString("en-US", {
+                      maximumFractionDigits: 0,
+                    })}{" "}
+                    {coin.symbol}
+                  </TableCell>
                 </TableRow>
               );
             })}

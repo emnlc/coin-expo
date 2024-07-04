@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-
+import ReactECharts from "echarts-for-react";
 import CoinChartOptions from "./CoinChartOptions";
 
-import ReactECharts from "echarts-for-react";
+import { Skeleton } from "../ui/skeleton";
+
 interface Props {
   id: string;
 }
@@ -15,12 +16,11 @@ const CoinChartGraph = (props: Props) => {
     if (change.toString()[0] === "-") {
       return "#D70040";
     }
-
     return "#0BDA51";
   };
 
   const changeQuery = useQuery({
-    queryKey: ["coin-price-change"],
+    queryKey: ["coin-price-change", props.id],
     queryFn: () =>
       fetch(`https://api.coingecko.com/api/v3/coins/${props.id}/`).then((res) =>
         res.json()
@@ -28,7 +28,7 @@ const CoinChartGraph = (props: Props) => {
   });
 
   const graphDataQuery = useQuery({
-    queryKey: ["graphData", props.id],
+    queryKey: ["graphData", props.id, range],
     queryFn: () =>
       fetch(
         `https://api.coingecko.com/api/v3/coins/${props.id}/market_chart?vs_currency=usd&days=${range}`
@@ -41,14 +41,15 @@ const CoinChartGraph = (props: Props) => {
   }, [range, graphDataQuery]);
 
   if (graphDataQuery.isLoading || changeQuery.isLoading) {
-    return <div>Loading...</div>;
+    return <Skeleton className=" h-[400px]"></Skeleton>;
   }
   if (graphDataQuery.isError || changeQuery.isError) {
     return <div>Error loading data</div>;
   }
 
-  const lineColor = changeQuery.data;
-  // console.log(lineColor);
+  const lineColor = setLineColor(
+    changeQuery.data.market_data.price_change_percentage_30d
+  );
   const prices = graphDataQuery.data?.prices;
   const formattedData = prices.map((item: [number, number]) => ({
     x: new Date(item[0]),
@@ -109,9 +110,7 @@ const CoinChartGraph = (props: Props) => {
         type: "line",
         smooth: true,
         lineStyle: {
-          color: setLineColor(
-            lineColor.market_data.price_change_percentage_30d
-          ),
+          color: lineColor,
           width: 1,
         },
         showSymbol: false,
@@ -129,12 +128,12 @@ const CoinChartGraph = (props: Props) => {
 
   return (
     <>
+      <h1 className="text-2xl font-semibold">Price Chart</h1>
       <CoinChartOptions range={range} setRange={setRange} />
       <ReactECharts
         option={options}
         style={{ height: 400, position: "relative" }}
       />
-      <h1>{range}</h1>
     </>
   );
 };

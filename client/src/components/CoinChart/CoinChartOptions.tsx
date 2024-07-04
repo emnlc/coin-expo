@@ -9,7 +9,7 @@ interface Props {
 
 const CoinChartOptions = (props: Props) => {
   // default the toggled button to the 30d toggle
-  const [activeToggle, setActiveToggle] = useState("30d");
+  const [activeToggle, setActiveToggle] = useState(props.range);
 
   // function used to change the background color of the toggle
   const handleToggleChange = (value: string) => {
@@ -18,12 +18,12 @@ const CoinChartOptions = (props: Props) => {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex flex-row gap-2">
         <Toggle
-          pressed={activeToggle === "24h"}
+          pressed={activeToggle === "1"}
           aria-label="Toggle 24 hours"
           onClick={() => {
-            handleToggleChange("24h");
+            handleToggleChange("1");
             props.setRange("1");
           }}
         >
@@ -31,10 +31,10 @@ const CoinChartOptions = (props: Props) => {
         </Toggle>
 
         <Toggle
-          pressed={activeToggle === "7d"}
+          pressed={activeToggle === "7"}
           aria-label="Toggle 7 days"
           onClick={() => {
-            handleToggleChange("7d");
+            handleToggleChange("7");
             props.setRange("7");
           }}
         >
@@ -42,10 +42,10 @@ const CoinChartOptions = (props: Props) => {
         </Toggle>
 
         <Toggle
-          pressed={activeToggle === "30d"}
+          pressed={activeToggle === "30"}
           aria-label="Toggle 30 days"
           onClick={() => {
-            handleToggleChange("30d");
+            handleToggleChange("30");
             props.setRange("30");
           }}
         >
