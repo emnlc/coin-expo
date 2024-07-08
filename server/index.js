@@ -126,23 +126,6 @@ app.get("/coingecko/search", (req, res) => {
   res.status(400).send("Please provide both symbol and name for fuzzy search!");
 });
 
-app.get("/coingecko/graph/:coin", async (req, res) => {
-  if (!coinGeckoList) {
-    return res.status(500).send("Data not available yet!");
-  }
-
-  try {
-    const response = await axios.get(
-      `https://api.coingecko.com/api/v3/coins/${req.params.coin}/market_chart?vs_currency=usd&days=30`
-    );
-    // https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30
-
-    res.send(response.data);
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-  }
-});
-
 app.listen(3000, async () => {
   console.log("Server is listening on port 3000");
   await getCoinGeckoList();

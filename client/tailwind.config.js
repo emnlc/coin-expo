@@ -20,6 +20,8 @@ module.exports = {
       colors: {
         coingecko: "#4BCC00",
         coinmarketcap: "#3861FB",
+        footerColor: "#191919",
+        coinExpo: "#0CB689",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

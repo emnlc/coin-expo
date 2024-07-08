@@ -10,6 +10,8 @@ import CoinStatistics from "@/components/CoinPage/CoinStatistics";
 import CoinDescription from "@/components/CoinPage/CoinDescription";
 import CoinUrls from "@/components/CoinPage/CoinUrls";
 
+import Loader from "@/components/Loader/Loader";
+
 interface Coins {
   id: number;
   name: string;
@@ -76,7 +78,7 @@ const Coin = () => {
     }
   }, [data, coinStats]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
   if (isError) return <div>Error!</div>;
   if (coinData == null) return null;
 

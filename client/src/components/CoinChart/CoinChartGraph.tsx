@@ -3,6 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import ReactECharts from "echarts-for-react";
 import CoinChartOptions from "./CoinChartOptions";
 
+import Lottie from "lottie-react";
+import animationData from "../../assets/error.json";
+
 import { Skeleton } from "../ui/skeleton";
 
 interface Props {
@@ -10,6 +13,31 @@ interface Props {
 }
 
 const CoinChartGraph = (props: Props) => {
+  const fetchWithRateLimitHandling = async (url: string) => {
+    const looper = true;
+    while (looper) {
+      const response = await fetch(url);
+
+      if (response.status !== 429) {
+        // If the response is not a 429, return the response JSON
+        return response.json();
+      }
+
+      // If the response is a 429, check the Retry-After header
+      const retryAfter = response.headers.get("Retry-After");
+
+      if (retryAfter) {
+        const retryAfterSeconds = parseInt(retryAfter, 10);
+        await new Promise((resolve) =>
+          setTimeout(resolve, retryAfterSeconds * 1000)
+        );
+      } else {
+        // If no Retry-After header, wait for a default of 1 second
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
+  };
+
   const [range, setRange] = useState("30");
 
   const setLineColor = (change: number) => {
@@ -22,17 +50,17 @@ const CoinChartGraph = (props: Props) => {
   const changeQuery = useQuery({
     queryKey: ["coin-price-change", props.id],
     queryFn: () =>
-      fetch(`https://api.coingecko.com/api/v3/coins/${props.id}/`).then((res) =>
-        res.json()
+      fetchWithRateLimitHandling(
+        `https://api.coingecko.com/api/v3/coins/${props.id}/`
       ),
   });
 
   const graphDataQuery = useQuery({
     queryKey: ["graphData", props.id, range],
     queryFn: () =>
-      fetch(
+      fetchWithRateLimitHandling(
         `https://api.coingecko.com/api/v3/coins/${props.id}/market_chart?vs_currency=usd&days=${range}`
-      ).then((res) => res.json()),
+      ),
     enabled: !!props.id && !!range, // only run if props and range is available
   });
 
@@ -41,9 +69,21 @@ const CoinChartGraph = (props: Props) => {
   }, [range, graphDataQuery]);
 
   if (graphDataQuery.isLoading || changeQuery.isLoading) {
-    return <Skeleton className=" h-[400px]"></Skeleton>;
+    return <Skeleton className=" h-[440px]"></Skeleton>;
   }
+
   if (graphDataQuery.isError || changeQuery.isError) {
+    if (
+      graphDataQuery.error?.message.includes("Too many requests") ||
+      changeQuery.error?.message.includes("Too many requests")
+    ) {
+      return (
+        <div className="h-[440px] flex flex-row justify-center items-center">
+          <Lottie className="block" animationData={animationData} />
+          <span>Please try again!</span>
+        </div>
+      );
+    }
     return <div>Error loading data</div>;
   }
 

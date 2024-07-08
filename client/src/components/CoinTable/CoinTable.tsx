@@ -110,7 +110,11 @@ const CoinTable = () => {
                   </TableCell>
                   <TableCell className="flex flex-col ">
                     <span>
-                      <Link to={`/${coin.slug}`} state={{ coin: coin }}>
+                      <Link
+                        className="hover:text-coinExpo transition-all"
+                        to={`/${coin.slug}`}
+                        state={{ coin: coin }}
+                      >
                         {coin.name}
                       </Link>
                     </span>

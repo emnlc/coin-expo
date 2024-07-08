@@ -6,11 +6,11 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="shadow-md w-full fixed top-0 left-0 z-50">
+      <div className="shadow-md w-full fixed top-0 left-0 z-50 md:relative">
         <div className=" font-bold text-2xl items-center md:flex justify-between bg-white py-4 md:px-10 px-7">
           {/* <h1>Coin Expo</h1> */}
           <Link
-            className="flex items-center gap-4 hover:text-blue-500 transition-all"
+            className="flex items-center gap-4 hover:text-coinExpo transition-all"
             to={"/"}
           >
             <img src="logo.svg"></img>
@@ -36,8 +36,12 @@ const Navbar = () => {
             }`}
           >
             <li className="md:ml-8 text-xl md:my-0 my-7">
-              <Link to={"/"} className="hover:text-blue-500 transition-all">
-                Account
+              <Link
+                onClick={() => setOpen(!open)}
+                to={"/"}
+                className="hover:text-coinExpo transition-all"
+              >
+                Home
               </Link>
             </li>
             <li className="md:ml-8 text-xl md:my-0 my-7">

@@ -69,6 +69,7 @@ const GlobalMetrics = () => {
 
       return d;
     },
+    staleTime: 1000 * 60 * 30, // 5 minutes
   });
   //   console.log(data);
 
@@ -78,9 +79,12 @@ const GlobalMetrics = () => {
 
   return (
     <div className="flex flex-col container gap-4 mt-36 mb-4">
-      <h1 className="text-xl font-semibold">Todays Global Metrics</h1>
+      <h1 className="text-xl md:text-3xl font-semibold">
+        Todays Global Metrics
+      </h1>
       <div>
-        <p className={`text-sm md:text-base ${isOpen ? "" : "line-clamp-1"}`}>
+        {/* Visible Line */}
+        <p className="text-sm md:text-base">
           The total crypto market cap is{" "}
           <span className="font-semibold">
             ${formatNumber(data.data.quote.USD.total_market_cap)}
@@ -92,11 +96,13 @@ const GlobalMetrics = () => {
           change in the past 24 hours.{" "}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`${isOpen ? "hidden" : ""}`}
+            className={`${isOpen ? "hidden" : "relative"}`}
           >
             <span className="text-gray-500 underline">Read More</span>
           </button>
-          <br />
+        </p>
+
+        <p className={`text-sm md:text-base ${isOpen ? "relative" : "hidden"}`}>
           The total crypto market volume over the last 24 hours is{" "}
           <span className="font-semibold">
             ${formatNumber(data.data.quote.USD.total_volume_24h)}
