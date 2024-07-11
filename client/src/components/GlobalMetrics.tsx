@@ -65,7 +65,9 @@ const GlobalMetrics = () => {
   const { data, isLoading, isError } = useQuery<GlobalMetrics>({
     queryKey: ["global-metrics"],
     queryFn: () => {
-      const d = fetch(`coins/global-metrics`).then((res) => res.json());
+      const d = fetch(
+        `${import.meta.env.VITE_COINEXPO_SERVER_URL}/coins/global-metrics`
+      ).then((res) => res.json());
 
       return d;
     },

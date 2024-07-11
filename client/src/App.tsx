@@ -11,7 +11,9 @@ function App() {
   useQuery({
     queryKey: ["coins"],
     queryFn: () => {
-      const d = fetch("/coins").then((res) => res.json());
+      const d = fetch(`${import.meta.env.VITE_COINEXPO_SERVER_URL}/coins`).then(
+        (res) => res.json()
+      );
       return d;
     },
     staleTime: 5 * 60 * 1000,

@@ -3,12 +3,19 @@ const express = require("express");
 const axios = require("axios");
 const Fuse = require("fuse.js");
 const app = express();
+const cors = require("cors");
 
 cachedData = null;
 cacheTime = 0;
 
 coinGeckoList = {};
 let fuse;
+
+app.use(
+  cors({
+    origin: process.env.DEV,
+  })
+);
 
 const getCoins = async () => {
   try {

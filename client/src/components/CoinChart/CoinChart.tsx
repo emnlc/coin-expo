@@ -13,7 +13,9 @@ const CoinChart = (props: Props) => {
     queryKey: [`metadata`],
     queryFn: () =>
       fetch(
-        `/coingecko/search?symbol=${props.symbol.toLowerCase()}&name=${props.name.toLowerCase()}&slug=${props.slug.toLowerCase()}`
+        `${
+          import.meta.env.VITE_COINEXPO_SERVER_URL
+        }/coingecko/search?symbol=${props.symbol.toLowerCase()}&name=${props.name.toLowerCase()}&slug=${props.slug.toLowerCase()}`
       ).then((res) => res.json()),
     // staleTime: 5 * 60 * 1000,
   });
