@@ -93,54 +93,58 @@ const CoinTable = () => {
 
   return (
     <>
-      <Table>
-        {/* table headers */}
-        <CoinTableHeaders change={change} setChange={setChange} />
+      <div className="text-black dark:text-white">
+        <Table>
+          {/* table headers */}
+          <CoinTableHeaders change={change} setChange={setChange} />
 
-        {/* table content */}
-        <TableBody>
-          {coinsData
-            .slice(startIndex, endIndex)
-            .sort((a, b) => a.cmc_rank - b.cmc_rank)
-            .map((coin: Coins) => {
-              return (
-                <TableRow className="font-semibold" key={coin.id}>
-                  <TableCell className=" items-center">
-                    {coin.cmc_rank}
-                  </TableCell>
-                  <TableCell className="flex flex-col ">
-                    <span>
-                      <Link
-                        className="hover:text-coinExpo transition-all"
-                        to={`/${coin.slug}`}
-                        state={{ coin: coin }}
-                      >
-                        {coin.name}
-                      </Link>
-                    </span>
-                    <span className=" text-gray-500">{coin.symbol}</span>
-                  </TableCell>
-                  <TableCell>
-                    $<CoinPriceFormatter price={coin.quote.USD.price} />
-                  </TableCell>
-                  {renderPercentChange(coin)}
-                  <TableCell>
-                    $
-                    {coin.quote.USD.market_cap.toLocaleString("en-US", {
-                      maximumFractionDigits: 0,
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    {coin.circulating_supply.toLocaleString("en-US", {
-                      maximumFractionDigits: 0,
-                    })}{" "}
-                    {coin.symbol}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
+          {/* table content */}
+          <TableBody>
+            {coinsData
+              .slice(startIndex, endIndex)
+              .sort((a, b) => a.cmc_rank - b.cmc_rank)
+              .map((coin: Coins) => {
+                return (
+                  <TableRow className="font-semibold" key={coin.id}>
+                    <TableCell className=" items-center">
+                      {coin.cmc_rank}
+                    </TableCell>
+                    <TableCell className="flex flex-col duration-0">
+                      <span>
+                        <Link
+                          className="hover:text-coinExpo transition-all"
+                          to={`/crypto/${coin.slug}`}
+                          state={{ coin: coin }}
+                        >
+                          {coin.name}
+                        </Link>
+                      </span>
+                      <span className=" text-gray-500 dark:text-gray-400">
+                        {coin.symbol}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      $<CoinPriceFormatter price={coin.quote.USD.price} />
+                    </TableCell>
+                    {renderPercentChange(coin)}
+                    <TableCell>
+                      $
+                      {coin.quote.USD.market_cap.toLocaleString("en-US", {
+                        maximumFractionDigits: 0,
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      {coin.circulating_supply.toLocaleString("en-US", {
+                        maximumFractionDigits: 0,
+                      })}{" "}
+                      {coin.symbol}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </div>
 
       {/* pagination button */}
       <CoinTablePagination

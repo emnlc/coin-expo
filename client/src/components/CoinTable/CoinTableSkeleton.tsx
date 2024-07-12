@@ -35,6 +35,8 @@ const CoinTableSkeleton = () => {
                 </DropdownMenuTrigger>
               </DropdownMenu>
             </TableHead>
+            <TableHead>Market Cap</TableHead>
+            <TableHead>Circulating Supply</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -51,6 +53,12 @@ const CoinTableSkeleton = () => {
               </TableCell>
               <TableCell>
                 <Skeleton className="w-[100px] h-[20px]"></Skeleton>
+              </TableCell>
+              <TableCell>
+                <Skeleton className="w-[100px] h-[20px]" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="w-[100px] h-[20px]" />
               </TableCell>
             </TableRow>
           ))}

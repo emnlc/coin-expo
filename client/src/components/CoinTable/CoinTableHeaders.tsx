@@ -10,7 +10,7 @@ interface Props {
 const CoinTableHeaders = (props: Props) => {
   return (
     <TableHeader>
-      <TableRow>
+      <TableRow className="dark:hover:hover:bg-neutral-800">
         <TableHead>#</TableHead>
         <TableHead>Name</TableHead>
         <TableHead>Price</TableHead>

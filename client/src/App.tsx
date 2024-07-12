@@ -2,10 +2,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import Home from "./pages/Home";
+import Crypto from "./pages/Crypto";
 import Coin from "./pages/Coin";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 function App() {
   useQuery({
@@ -23,12 +26,15 @@ function App() {
 
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/:coin" element={<Coin />} />
-      </Routes>
-      <Footer />
+      <DarkModeProvider>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/crypto" element={<Crypto />} />
+          <Route path="/crypto/:coin" element={<Coin />} />
+        </Routes>
+        <Footer />
+      </DarkModeProvider>
     </Router>
   );
 }

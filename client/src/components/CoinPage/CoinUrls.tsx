@@ -52,14 +52,14 @@ const CoinUrls = (props: Props) => {
       <div className="flex flex-col gap-2 text-sm">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger>Explorer Links</AccordionTrigger>
+            <AccordionTrigger className="">Explorer Links</AccordionTrigger>
             <AccordionContent>
               <ul className="flex flex-col gap-2">
                 {props.coin.urls.explorer.map((url, index) => (
                   <li className="" key={index}>
                     <a
                       href={url}
-                      className="hover:text-blue-500 transition-all"
+                      className="hover:text-coinExpo transition-all"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -78,7 +78,7 @@ const CoinUrls = (props: Props) => {
                   <li className="" key={index}>
                     <a
                       href={url}
-                      className="hover:text-blue-500 transition-all"
+                      className="hover:text-coinExpo transition-all"
                       target="_blank"
                     >
                       {getWebsiteName(url)}
@@ -90,7 +90,7 @@ const CoinUrls = (props: Props) => {
                   <li className="" key={index}>
                     <a
                       href={url}
-                      className="hover:text-blue-500 transition-all"
+                      className="hover:text-coinExpo transition-all"
                       target="_blank"
                     >
                       {getWebsiteName(url)}
@@ -108,7 +108,7 @@ const CoinUrls = (props: Props) => {
                   <a
                     target="_blank"
                     href={props.coin.urls.twitter.toString()}
-                    className="hover:text-blue-500 transition-all"
+                    className="hover:text-coinExpo transition-all"
                   >
                     {getWebsiteName(props.coin.urls.twitter.toString())}
                   </a>
@@ -117,7 +117,7 @@ const CoinUrls = (props: Props) => {
                   <a
                     target="_blank"
                     href={props.coin.urls.reddit.toString()}
-                    className="hover:text-blue-500 transition-all"
+                    className="hover:text-coinExpo transition-all"
                   >
                     {getWebsiteName(props.coin.urls.reddit.toString())}
                   </a>
@@ -126,7 +126,7 @@ const CoinUrls = (props: Props) => {
                   <a
                     target="_blank"
                     href={props.coin.urls.message_board.toString()}
-                    className="hover:text-blue-500 transition-all"
+                    className="hover:text-coinExpo transition-all"
                   >
                     {getWebsiteName(props.coin.urls.message_board.toString())}
                   </a>
@@ -135,7 +135,7 @@ const CoinUrls = (props: Props) => {
                   <a
                     target="_blank"
                     href={props.coin.urls.facebook.toString()}
-                    className="hover:text-blue-500 transition-all"
+                    className="hover:text-coinExpo transition-all"
                   >
                     {getWebsiteName(props.coin.urls.facebook.toString())}
                   </a>

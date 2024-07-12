@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 
+import GlobalMetricsLoading from "./GlobalMetricsLoading";
+
 interface GlobalMetrics {
   data: {
     eth_dominance: number;
@@ -75,14 +77,14 @@ const GlobalMetrics = () => {
   });
   //   console.log(data);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <GlobalMetricsLoading />;
   if (isError) return <p>Error!</p>;
   if (!data) return <p>No data</p>;
 
   return (
-    <div className="flex flex-col container gap-4 mt-36 mb-4">
+    <div className="flex flex-col container gap-4 pt-36 mb-4 text-black dark:text-white">
       <h1 className="text-xl md:text-3xl font-semibold">
-        Todays Global Metrics
+        Today's Global Metrics
       </h1>
       <div>
         {/* Visible Line */}
@@ -100,7 +102,9 @@ const GlobalMetrics = () => {
             onClick={() => setIsOpen(!isOpen)}
             className={`${isOpen ? "hidden" : "relative"}`}
           >
-            <span className="text-gray-500 underline">Read More</span>
+            <span className="text-gray-500 dark:text-gray-400 underline">
+              Read More
+            </span>
           </button>
         </p>
 
@@ -128,7 +132,9 @@ const GlobalMetrics = () => {
           the last 24 hours.
           <br />
           <button onClick={() => setIsOpen(!isOpen)}>
-            <span className="text-gray-500 underline">Read Less</span>
+            <span className="text-gray-500 dark:text-gray-400 underline">
+              Read Less
+            </span>
           </button>
         </p>
 

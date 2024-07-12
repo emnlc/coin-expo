@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 const Email = () => {
   return (
     <>
-      <div className="flex flex-col md:flex-row items-center my-16 w-full">
+      <div className="flex flex-col md:flex-row items-center my-16 w-full text-black dark:text-white">
         <div className="email-left-container flex flex-col gap-4">
           <h1 className="text-xl font-semibold md:text-3xl">
             Stay up to date on the latest crypto news.
@@ -19,13 +19,13 @@ const Email = () => {
           </p>
           <div className="email-button-container flex flex-col gap-2 md:flex-row md:gap-8 items-center">
             <Input
-              className="md:w-96"
+              className="md:w-96 "
               type="email"
               placeholder="Enter your email"
             />
             <Button
               size={"lg"}
-              className="bg-coinExpo hover:opacity-80 w-full md:w-fit md:h-11 md:rounded-md md:px-8"
+              className="bg-coinExpo hover:opacity-80 w-full md:w-fit md:h-11 md:rounded-md md:px-8 text-white"
             >
               Subscribe
             </Button>

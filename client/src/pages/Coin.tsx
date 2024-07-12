@@ -12,6 +12,8 @@ import CoinUrls from "@/components/CoinPage/CoinUrls";
 
 import Loader from "@/components/Loader/Loader";
 
+import { useDarkMode } from "@/context/DarkModeContext";
+
 interface Coins {
   id: number;
   name: string;
@@ -56,6 +58,8 @@ interface Coin {
 }
 
 const Coin = () => {
+  const { darkMode } = useDarkMode();
+
   const { coin } = useParams<{ coin: string }>();
   const location = useLocation();
   const coinStats: Coins = location.state.coin;
@@ -87,33 +91,37 @@ const Coin = () => {
   // console.log(coinData);
   return (
     <>
-      <div className="flex flex-col container my-36">
-        {/* coin icon, name and symbol */}
-        <CoinHeader coin={coinStats} img={coinData.logo} />
+      <div className={`${darkMode ? "bg-white" : "dark bg-neutral-800"} `}>
+        <div className="flex flex-col container py-36 dark:text-white">
+          {/* coin icon, name and symbol */}
+          <CoinHeader coin={coinStats} img={coinData.logo} />
 
-        {/* coin price */}
-        <div className="flex flex-row justify-start items-start">
-          <h1 className="text-4xl font-semibold">
-            ${<CoinPriceFormatter price={coinStats.quote.USD.price} />}
-          </h1>
-          <span className="text-sm text-gray-500 ml-1">USD</span>
-        </div>
+          {/* coin price */}
+          <div className="flex flex-row justify-start items-start">
+            <h1 className="text-4xl font-semibold">
+              ${<CoinPriceFormatter price={coinStats.quote.USD.price} />}
+            </h1>
+            <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">
+              USD
+            </span>
+          </div>
 
-        <CoinChart
-          name={coinStats.name}
-          symbol={coinStats.symbol}
-          slug={coinStats.slug}
-        />
-
-        <CoinStatistics coin={coinStats} />
-
-        <div className="flex flex-col md:flex-row gap-16">
-          <CoinDescription
-            name={coinData.name}
-            description={coinData.description}
+          <CoinChart
+            name={coinStats.name}
+            symbol={coinStats.symbol}
+            slug={coinStats.slug}
           />
 
-          <CoinUrls coin={coinData} />
+          <CoinStatistics coin={coinStats} />
+
+          <div className="flex flex-col md:flex-row gap-16">
+            <CoinDescription
+              name={coinData.name}
+              description={coinData.description}
+            />
+
+            <CoinUrls coin={coinData} />
+          </div>
         </div>
       </div>
     </>

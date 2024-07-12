@@ -20,8 +20,9 @@ module.exports = {
       colors: {
         coingecko: "#4BCC00",
         coinmarketcap: "#3861FB",
-        footerColor: "#191919",
+        darkModeColor: "#121212",
         coinExpo: "#0CB689",
+        coinExpoGradient: "#77D051",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -78,4 +79,5 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
+  darkMode: "class",
 };

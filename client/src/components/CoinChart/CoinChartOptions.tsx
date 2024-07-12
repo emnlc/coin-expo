@@ -18,7 +18,7 @@ const CoinChartOptions = (props: Props) => {
 
   return (
     <>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 my-2">
         <Toggle
           pressed={activeToggle === "1"}
           aria-label="Toggle 24 hours"

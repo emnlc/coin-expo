@@ -59,7 +59,9 @@ const CoinHeader = (props: Props) => {
           {props.coin.name}{" "}
           {percentChangeColor(props.coin.quote.USD.percent_change_1h)}
         </div>{" "}
-        <span className=" text-sm text-gray-500">{props.coin.symbol}</span>
+        <span className=" text-sm text-gray-500 dark:text-gray-400">
+          {props.coin.symbol}
+        </span>
       </div>
     </div>
   );

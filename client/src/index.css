@@ -78,10 +78,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
-.no-ellipsis {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: clip;
-}
+
+/* 
+* {
+  @apply transition-colors duration-200;
+} */

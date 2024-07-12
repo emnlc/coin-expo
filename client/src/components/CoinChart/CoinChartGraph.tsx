@@ -7,12 +7,15 @@ import Lottie from "lottie-react";
 import animationData from "../../assets/error.json";
 
 import { Skeleton } from "../ui/skeleton";
+import { useDarkMode } from "@/context/DarkModeContext";
 
 interface Props {
   id: string;
 }
 
 const CoinChartGraph = (props: Props) => {
+  const { darkMode } = useDarkMode();
+
   const fetchWithRateLimitHandling = async (url: string) => {
     const looper = true;
     while (looper) {
@@ -69,7 +72,13 @@ const CoinChartGraph = (props: Props) => {
   }, [range, graphDataQuery]);
 
   if (graphDataQuery.isLoading || changeQuery.isLoading) {
-    return <Skeleton className=" h-[440px]"></Skeleton>;
+    return (
+      <>
+        <h1 className="text-2xl font-semibold">Price Chart</h1>
+        <CoinChartOptions range={range} setRange={setRange} />
+        <Skeleton className=" h-[400px]"></Skeleton>
+      </>
+    );
   }
 
   if (graphDataQuery.isError || changeQuery.isError) {
@@ -90,6 +99,7 @@ const CoinChartGraph = (props: Props) => {
   const lineColor = setLineColor(
     changeQuery.data.market_data.price_change_percentage_30d
   );
+
   const prices = graphDataQuery.data?.prices;
   const formattedData = prices.map((item: [number, number]) => ({
     x: new Date(item[0]),
@@ -115,10 +125,8 @@ const CoinChartGraph = (props: Props) => {
     },
     xAxis: {
       type: "time",
-      axisTick: {
-        show: false,
-      },
       axisLabel: {
+        interval: "Timestamp",
         formatter: (value: number) => {
           const date = new Date(value);
           const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -126,9 +134,10 @@ const CoinChartGraph = (props: Props) => {
           const year = date.getFullYear().toString().slice(-2);
           return `${month}/${day}/${year}`;
         },
-        rotate: 45,
+        rotate: 0,
         hideOverlap: true,
         showMinLabel: false,
+        color: darkMode ? "#000000" : "#ffffff",
       },
     },
     yAxis: {
@@ -139,6 +148,7 @@ const CoinChartGraph = (props: Props) => {
         showMinLabel: false,
         showMaxLabel: false,
         formatter: (value: number) => `$${value}`,
+        color: darkMode ? "#000000" : "#ffffff",
       },
     },
     series: [
@@ -148,10 +158,10 @@ const CoinChartGraph = (props: Props) => {
           item.y,
         ]),
         type: "line",
-        smooth: true,
+        smooth: false,
         lineStyle: {
           color: lineColor,
-          width: 1,
+          width: 2,
         },
         showSymbol: false,
       },
@@ -170,6 +180,7 @@ const CoinChartGraph = (props: Props) => {
     <>
       <h1 className="text-2xl font-semibold">Price Chart</h1>
       <CoinChartOptions range={range} setRange={setRange} />
+
       <ReactECharts
         option={options}
         style={{ height: 400, position: "relative" }}
