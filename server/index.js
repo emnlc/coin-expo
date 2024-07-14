@@ -20,7 +20,7 @@ app.use(
 const getCoins = async () => {
   try {
     const response = await axios.get(
-      "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=500",
+      "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=1000",
       {
         headers: {
           "X-CMC_PRO_API_KEY": process.env.CMC_KEY,

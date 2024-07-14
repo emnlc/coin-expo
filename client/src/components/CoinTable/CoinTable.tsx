@@ -74,7 +74,11 @@ const CoinTable = () => {
       <TableCell className="font-semibold">
         {percent.toString()[0] === "-" ? (
           <div className="flex">
-            <img src="/down.svg" className="w-4 h-4" alt="" />
+            <img
+              src="/down.svg"
+              className="w-4 h-4 rotate-180 md:rotate-0"
+              alt=""
+            />
             <span className=" text-red-500 font-semibold">
               {percent.toFixed(2).toString().slice(1)}%
             </span>
@@ -148,6 +152,7 @@ const CoinTable = () => {
 
       {/* pagination button */}
       <CoinTablePagination
+        totalRows={1000}
         rowsPerPage={rowsPerPage}
         startIndex={startIndex}
         setStartIndex={setStartIndex}

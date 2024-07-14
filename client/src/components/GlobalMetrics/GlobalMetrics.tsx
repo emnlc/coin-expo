@@ -37,7 +37,13 @@ const GlobalMetrics = () => {
 
     return (
       <>
-        <img src={`/${tick}.svg`} className="w-4 h-4 inline" alt="" />
+        <img
+          src={`/${tick}.svg`}
+          className={`w-4 h-4 inline ${
+            negative ? "rotate-180 md:rotate-0" : ""
+          }`}
+          alt=""
+        />
         <span
           className={`text-${color}-500 font-semibold text-xs md:text-base`}
         >

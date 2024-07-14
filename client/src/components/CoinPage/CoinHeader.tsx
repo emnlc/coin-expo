@@ -40,7 +40,11 @@ const CoinHeader = (props: Props) => {
 
     return (
       <>
-        <img src={`/${tick}.svg`} className="w-4 h-4" alt="" />
+        <img
+          src={`/${tick}.svg`}
+          className={`w-4 h-4 ${negative ? "rotate-180 md:rotate-0" : ""}`}
+          alt=""
+        />
         <span className={`text-${color}-500 font-semibold text-sm`}>
           {negative
             ? change.toFixed(2).toString().slice(1)
