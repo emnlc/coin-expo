@@ -14,6 +14,8 @@ import Loader from "@/components/Loader/Loader";
 
 import { useDarkMode } from "@/context/DarkModeContext";
 
+import { User } from "@supabase/supabase-js";
+
 interface Coins {
   id: number;
   name: string;

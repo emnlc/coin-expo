@@ -3,13 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 import CoinTableSkeleton from "./CoinTableSkeleton";
-
 import CoinTablePagination from "./CoinTablePagination";
 import CoinTableHeaders from "./CoinTableHeaders";
-
 import CoinPriceFormatter from "../CoinPriceFormatter";
 
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+
+import { useUser } from "../../context/UserContext";
+import { supabase } from "@/lib/helper/supabase";
 
 interface Coins {
   id: number;
@@ -30,22 +31,72 @@ interface Coins {
   };
 }
 
-const CoinTable = () => {
-  // data
-  const { data, isLoading, isError } = useQuery<{ data: Coins[] }>({
-    queryKey: ["coins"],
-    refetchInterval: 5 * 60 * 1000, // update data
-  });
+interface Props {
+  watchlist: boolean;
+}
 
+const CoinTable = (props: Props) => {
+  const { user } = useUser();
   const [coinsData, setCoinsData] = useState<Coins[]>([]);
   const [change, setChange] = useState("30d"); // default market percent value
 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: props.watchlist ? ["watchlist"] : ["coins"],
+    queryFn: async () => {
+      if (props.watchlist && user) {
+        // Query the Supabase database for the user's watchlist
+        const { data, error } = await supabase
+          .from("watchlist")
+          .select("coin")
+          .eq("email", user.email)
+          .single();
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        if (data && data.coin.length > 0) {
+          // Fetch the coin data from your server
+          const coinsString = data.coin.join(",");
+          return fetch(
+            `${
+              import.meta.env.VITE_COINEXPO_SERVER_URL
+            }/coins/watchlist/${coinsString}`
+          ).then((res) => res.json());
+        }
+
+        return []; // Return an empty array if no coins
+      } else {
+        return fetch(`${import.meta.env.VITE_COINEXPO_SERVER_URL}/coins`).then(
+          (res) => res.json()
+        );
+      }
+    },
+
+    staleTime: !props.watchlist ? 5 * 60 * 1000 : undefined,
+    refetchInterval: !props.watchlist ? 5 * 60 * 1000 : undefined,
+  });
+
   useEffect(() => {
     if (data) {
-      setCoinsData(data.data);
+      // console.log("Full response data:", data);
+  
+      if (Array.isArray(data.data)) {
+        // /coins endpoint returns an array
+        setCoinsData(data.data);
+      } else if (typeof data.data === 'object' && data.data !== null) {
+        // /coins/watchlist endpoint returns an object
+        // console.log("data: ", data);
+        setCoinsData(Object.values(data.data));
+      } else {
+        setCoinsData([]);
+      }
     }
   }, [data]);
+  
   // console.log(data);
+  
+  
 
   // pagination variables
   const rowsPerPage = 100;
@@ -57,17 +108,21 @@ const CoinTable = () => {
 
   const renderPercentChange = (coin: Coins) => {
     let percent = 0;
-    if (change === "1h") {
-      percent = coin.quote.USD.percent_change_1h;
-    }
-    if (change === "24h") {
-      percent = coin.quote.USD.percent_change_24h;
-    }
-    if (change === "7d") {
-      percent = coin.quote.USD.percent_change_7d;
-    }
-    if (change === "30d") {
-      percent = coin.quote.USD.percent_change_30d;
+    switch (change) {
+      case "1h":
+        percent = coin.quote.USD.percent_change_1h;
+        break;
+      case "24h":
+        percent = coin.quote.USD.percent_change_24h;
+        break;
+      case "7d":
+        percent = coin.quote.USD.percent_change_7d;
+        break;
+      case "30d":
+        percent = coin.quote.USD.percent_change_30d;
+        break;
+      default:
+        break;
     }
 
     return (
@@ -104,11 +159,17 @@ const CoinTable = () => {
 
           {/* table content */}
           <TableBody>
-            {coinsData
-              .slice(startIndex, endIndex)
-              .sort((a, b) => a.cmc_rank - b.cmc_rank)
-              .map((coin: Coins) => {
-                return (
+            {coinsData.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center">
+                  Your watchlist is empty. Add some coins to get started!
+                </TableCell>
+              </TableRow>
+            ) : (
+              coinsData
+                .slice(startIndex, endIndex)
+                .sort((a, b) => a.cmc_rank - b.cmc_rank)
+                .map((coin: Coins) => (
                   <TableRow className="font-semibold" key={coin.id}>
                     <TableCell className=" items-center">
                       {coin.cmc_rank}
@@ -144,21 +205,25 @@ const CoinTable = () => {
                       {coin.symbol}
                     </TableCell>
                   </TableRow>
-                );
-              })}
+                ))
+            )}
           </TableBody>
         </Table>
       </div>
 
       {/* pagination button */}
-      <CoinTablePagination
-        totalRows={1000}
-        rowsPerPage={rowsPerPage}
-        startIndex={startIndex}
-        setStartIndex={setStartIndex}
-        endIndex={endIndex}
-        setEndIndex={setEndIndex}
-      />
+      {props.watchlist ? (
+        <></>
+      ) : (
+        <CoinTablePagination
+          totalRows={1000}
+          rowsPerPage={rowsPerPage}
+          startIndex={startIndex}
+          setStartIndex={setStartIndex}
+          endIndex={endIndex}
+          setEndIndex={setEndIndex}
+        />
+      )}
     </>
   );
 };

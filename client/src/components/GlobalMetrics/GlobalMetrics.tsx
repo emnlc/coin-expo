@@ -79,7 +79,8 @@ const GlobalMetrics = () => {
 
       return d;
     },
-    staleTime: 1000 * 60 * 30, // 5 minutes
+    staleTime: 5 * 60 * 1000,
+    refetchInterval: 5 * 60 * 1000,
   });
   //   console.log(data);
 

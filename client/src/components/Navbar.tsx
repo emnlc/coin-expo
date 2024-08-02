@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+// import { User } from "@supabase/supabase-js";
 
 import { useDarkMode } from "@/context/DarkModeContext";
 
@@ -10,6 +11,10 @@ import {
   faBars,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+
+// interface Props {
+//   user: User | null;
+// }
 
 const Navbar = () => {
   const { darkMode, toggleDarkMode } = useDarkMode();
@@ -23,7 +28,15 @@ const Navbar = () => {
         } shadow-md w-full fixed top-0 left-0 z-50 md:relative`}
       >
         <div className=" font-bold text-2xl items-center md:flex justify-between bg-white dark:bg-neutral-900 dark:text-white py-4 md:px-10 px-7">
-          <Link className="flex items-center gap-4 " to={"/"}>
+          <Link
+            className="flex items-center gap-4 "
+            to={"/"}
+            onClick={() => {
+              if (open) {
+                setOpen(!open);
+              }
+            }}
+          >
             <img src="logo.svg"></img>
             <h1 className="hidden md:block hover:text-coinExpo transition-all hover:duration-150 duration-0">
               Coin Expo
@@ -62,27 +75,20 @@ const Navbar = () => {
               transitionDuration: "700ms, 0ms",
             }}
           >
-            {/* <li className="md:ml-8  md:my-0 my-7">
-              <Link
-                onClick={() => setOpen(!open)}
-                to={"/"}
-                className="hover:text-coinExpo transition-colors "
-              >
-                Home
-              </Link>
-            </li> */}
             <li className="md:ml-8  md:my-0 my-7">
               <Link
-                to={"/"}
+                to={"/watchlist"}
                 className="hover:text-coinExpo transition-colors hover:duration-150 duration-0 "
+                onClick={() => setOpen(!open)}
               >
-                Account
+                Watchlist
               </Link>
             </li>
             <li className="md:ml-8 md:my-0 my-7">
               <Link
                 to={"/crypto"}
                 className="hover:text-coinExpo transition-colors hover:duration-150 duration-0"
+                onClick={() => setOpen(!open)}
               >
                 Crypto
               </Link>

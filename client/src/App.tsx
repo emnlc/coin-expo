@@ -1,39 +1,40 @@
+// src/App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-
 import Home from "./pages/Home";
 import Crypto from "./pages/Crypto";
 import Coin from "./pages/Coin";
-
+import Watchlist from "./pages/Watchlist";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
+import ProtectedRoute from "./components/ProtectedRoute";
 import { DarkModeProvider } from "./context/DarkModeContext";
+import { UserProvider } from "./context/UserContext"; // Import UserProvider
 
 function App() {
-  useQuery({
-    queryKey: ["coins"],
-    queryFn: () => {
-      const d = fetch(`${import.meta.env.VITE_COINEXPO_SERVER_URL}/coins`).then(
-        (res) => res.json()
-      );
-      return d;
-    },
-    staleTime: 5 * 60 * 1000,
-  });
-
-  // console.log(data);
-
   return (
     <Router>
       <DarkModeProvider>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/crypto" element={<Crypto />} />
-          <Route path="/crypto/:coin" element={<Coin />} />
-        </Routes>
-        <Footer />
+        <UserProvider> {/* Wrap with UserProvider */}
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/watchlist"
+              element={
+                <ProtectedRoute>
+                  <Watchlist />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/account/login" element={<Login />} />
+            <Route path="/account/register" element={<Register />} />
+            <Route path="/crypto" element={<Crypto />} />
+            <Route path="/crypto/:coin" element={<Coin />} />
+          </Routes>
+          <Footer />
+        </UserProvider>
       </DarkModeProvider>
     </Router>
   );

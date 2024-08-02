@@ -16,7 +16,7 @@ const Crypto = () => {
               Today's Crypto Prices.
             </h1>
           </header>
-          <CoinTable />
+          <CoinTable watchlist={false} />
           <Email />
         </div>
       </div>

@@ -105,6 +105,22 @@ app.get("/coins/:coin", async (req, res) => {
   }
 });
 
+app.get("/coins/watchlist/:watchlist", async (req, res) => {
+  try {
+    const response = await axios.get(
+      `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?slug=${req.params.watchlist}`,
+      {
+        headers: {
+          "X-CMC_PRO_API_KEY": process.env.CMC_KEY,
+        },
+      }
+    );
+    res.send(response.data);
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+  }
+});
+
 app.get("/coingecko/list", async (req, res) => {
   if (!coinGeckoList) {
     return res.status(500).send("Data not available yet!");
