@@ -70,7 +70,8 @@ const Coin = () => {
     queryKey: [coin],
     queryFn: () => {
       const d = fetch(
-        `${import.meta.env.VITE_COINEXPO_SERVER_URL}/coins/${coin}`
+        `${import.meta.env.VITE_COINEXPO_SERVER_URL}/coins/${coin}`,
+        { method: "GET", credentials: "include" }
       ).then((res) => res.json());
       return d;
     },

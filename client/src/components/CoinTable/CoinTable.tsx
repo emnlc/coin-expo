@@ -61,7 +61,8 @@ const CoinTable = (props: Props) => {
           return fetch(
             `${
               import.meta.env.VITE_COINEXPO_SERVER_URL
-            }/coins/watchlist/${coinsString}`
+            }/coins/watchlist/${coinsString}`,
+            { method: "GET", credentials: "include" }
           ).then((res) => res.json());
         }
 
@@ -80,11 +81,11 @@ const CoinTable = (props: Props) => {
   useEffect(() => {
     if (data) {
       // console.log("Full response data:", data);
-  
+
       if (Array.isArray(data.data)) {
         // /coins endpoint returns an array
         setCoinsData(data.data);
-      } else if (typeof data.data === 'object' && data.data !== null) {
+      } else if (typeof data.data === "object" && data.data !== null) {
         // /coins/watchlist endpoint returns an object
         // console.log("data: ", data);
         setCoinsData(Object.values(data.data));
@@ -93,10 +94,8 @@ const CoinTable = (props: Props) => {
       }
     }
   }, [data]);
-  
+
   // console.log(data);
-  
-  
 
   // pagination variables
   const rowsPerPage = 100;

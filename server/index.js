@@ -14,6 +14,9 @@ let fuse;
 app.use(
   cors({
     origin: process.env.DEV,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
