@@ -157,6 +157,6 @@ app.listen(3000, async () => {
   await getCoinGeckoList();
   await getCoins();
 
-  setInterval(getCoins, 15 * 60 * 1000); // update every 15 minutes
+  setInterval(getCoins, process.env.FETCH_INTERVAL * 60 * 1000);
   setInterval(getCoinGeckoList, 24 * 60 * 60 * 1000); // update every 24 hours
 });
